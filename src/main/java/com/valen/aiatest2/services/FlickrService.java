@@ -1,8 +1,8 @@
 package com.valen.aiatest2.services;
 
-import com.valen.aiatest2.entities.FlickrPhotoResponse;
-import com.valen.aiatest2.entities.FlickrResponse;
-import com.valen.aiatest2.entities.FlickrResponseWithStats;
+import com.valen.aiatest2.entities.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface FlickrService {
     FlickrResponse getFlickrTag(String id);
@@ -13,4 +13,6 @@ public interface FlickrService {
     FlickrResponseWithStats checkTempFlickrPhotoResponse();
     String clearTempFlickrPhotoResponse();
     String savePhoto();
+    Page<Tag> getTagByPage(Pageable pageable);
+    Page<Photo> getPhotoByPage(Pageable pageable);
 }

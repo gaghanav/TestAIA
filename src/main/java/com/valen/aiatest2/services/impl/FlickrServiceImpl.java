@@ -6,6 +6,8 @@ import com.valen.aiatest2.services.FlickrService;
 import com.valen.aiatest2.services.PhotoService;
 import com.valen.aiatest2.services.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -113,5 +115,15 @@ public class FlickrServiceImpl implements FlickrService {
         else {
             return clearTempFlickrTag();
         }
+    }
+
+    @Override
+    public Page<Tag> getTagByPage(Pageable pageable) {
+        return tagService.getTagByPage(pageable);
+    }
+
+    @Override
+    public Page<Photo> getPhotoByPage(Pageable pageable) {
+        return photoService.getPhotoByPage(pageable);
     }
 }
