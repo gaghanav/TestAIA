@@ -19,6 +19,17 @@ public class Photo {
 
     private String title;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Jakarta")
-    private Date date;
+//    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Jakarta")
+//    private Date date;
+    private String owner;
+    private String secret;
+
+    public Photo(String title, String owner, String secret) {
+        this.title = title;
+        this.owner = owner;
+        this.secret = secret;
+    }
+
+    public Photo() {
+    }
 }

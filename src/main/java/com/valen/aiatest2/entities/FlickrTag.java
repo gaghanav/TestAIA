@@ -16,9 +16,9 @@ public class FlickrTag {
     @JsonProperty("_content")
     private String content;
     @JsonProperty("machine_tag")
-    private Integer machineTag;
+    private Boolean machineTag;
 
-    public FlickrTag(String id, String author, String authorName, String raw, String content, Integer machineTag) {
+    public FlickrTag(String id, String author, String authorName, String raw, String content, Boolean machineTag) {
         this.id = id;
         this.author = author;
         this.authorName = authorName;

@@ -8,10 +8,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
-public class RestTemplateConfig {
+public class WebClientConfig {
 
     @Bean
-    public WebClient restTemplate() {
+    public WebClient webClient() {
         return WebClient.create(Constant.FLICKR_URL);
     }
 }

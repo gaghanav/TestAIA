@@ -1,24 +1,13 @@
 package com.valen.aiatest2.services.impl;
 
 import com.valen.aiatest2.constants.Constant;
-import com.valen.aiatest2.entities.Flickr;
-import com.valen.aiatest2.entities.FlickrTag;
-import com.valen.aiatest2.entities.Tag;
+import com.valen.aiatest2.entities.*;
 import com.valen.aiatest2.services.FlickrService;
+import com.valen.aiatest2.services.PhotoService;
 import com.valen.aiatest2.services.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.env.Environment;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import java.io.IOException;
-import java.time.Duration;
 
 @Service
 public class FlickrServiceImpl implements FlickrService {
@@ -28,45 +17,101 @@ public class FlickrServiceImpl implements FlickrService {
     @Autowired
     private TagService tagService;
 
-    private  Flickr tempFlickr = new Flickr();
+    @Autowired
+    private PhotoService photoService;
 
+    private FlickrResponse tempFlickrResponse = new FlickrResponse();
+    private FlickrResponseWithStats tempFlickrPhotoResponse = new FlickrResponseWithStats();
 
     @Override
-    public Flickr getFlickrTag(String id) {
-        tempFlickr =  webClient
+    public FlickrResponse getFlickrTag(String id) {
+        tempFlickrResponse =  webClient
                 .get()
                 .uri("/?"+ Constant.GET_PHOTO_TAG_METHOD +"&"+Constant.API_KEY+"&photo_id="+id+Constant.FORMAT_JSON_NO_CALLBACK)
                 .retrieve()
-                .bodyToMono(Flickr.class)
+                .bodyToMono(FlickrResponse.class)
                 .block();
-        return  tempFlickr;
+        return tempFlickrResponse;
     }
 
     @Override
-    public Flickr checkTempFlickrTag() {
-        return tempFlickr;
+    public FlickrResponse checkTempFlickrTag() {
+        return tempFlickrResponse;
     }
 
     @Override
     public String clearTempFlickrTag() {
-        String response = "Temporary Tag Is Empty";
-        if(tempFlickr.getPhoto()!=null) {
-            tempFlickr = new Flickr();
-            response = "Temporary Tag have been cleared";
+        if(tempFlickrResponse.getPhoto()!=null) {
+            tempFlickrResponse = new FlickrResponse();
+            return String.format(Constant.TEMPCLEARED,Constant.TAG);
         }
-        return response;
+        else {
+            return String.format(Constant.TEMPEMPTY, Constant.TAG);
+        }
     }
 
     @Override
-    public void saveTag() {
-        for (FlickrTag t:tempFlickr.getPhoto().getTags().getTag()
-             ) {
-            Tag tag = new Tag();
-            tag.setAuthor(t.getAuthor());
-            tag.setAuthorName(t.getAuthorName());
-            tag.setName(t.getRaw());
-            tag.setTagId(t.getId());
-            tagService.saveTag(tag);
+    public String saveTag() {
+        if(tempFlickrResponse.getPhoto()!=null){
+            for (FlickrTag t : tempFlickrResponse.getPhoto().getTags().getTag()
+            ) {
+                Tag tag = new Tag();
+                tag.setAuthor(t.getAuthor());
+                tag.setAuthorName(t.getAuthorName());
+                tag.setName(t.getRaw());
+                tag.setTagId(t.getId());
+                tagService.saveTag(tag);
+            }
+            clearTempFlickrTag();
+            return String.format(Constant.SAVED, Constant.TAG);
+        }
+        else {
+            return clearTempFlickrTag();
+        }
+    }
+
+    @Override
+    public FlickrResponseWithStats getFlickrPhotoResponse(String text) {
+        tempFlickrPhotoResponse = webClient
+                .get()
+                .uri("/?"+Constant.GET_PHOTO_METHOD+"&"+Constant.API_KEY+"&text="+text+Constant.FORMAT_JSON_NO_CALLBACK)
+                .retrieve()
+                .bodyToMono(FlickrResponseWithStats.class)
+                .block();
+        return tempFlickrPhotoResponse;
+    }
+
+    @Override
+    public FlickrResponseWithStats checkTempFlickrPhotoResponse() {
+        return tempFlickrPhotoResponse;
+    }
+
+    @Override
+    public String clearTempFlickrPhotoResponse() {
+        if(tempFlickrPhotoResponse.getPhotos()!=null) {
+            tempFlickrPhotoResponse = new FlickrResponseWithStats();
+            return String.format(Constant.TEMPCLEARED,Constant.PHOTO);
+        }
+        else {
+            return String.format(Constant.TEMPEMPTY, Constant.PHOTO);
+        }
+    }
+
+    @Override
+    public String savePhoto() {
+        if(tempFlickrPhotoResponse.getPhotos()!=null){
+            for (FlickrPhoto p: tempFlickrPhotoResponse.getPhotos().getPhotos()
+                 ) {
+                Photo photo = new Photo();
+                photo.setTitle(p.getTitle());
+                photo.setOwner(p.getOwner());
+                photo.setSecret(p.getSecret());
+                photoService.savePhoto(photo);
+            }
+            return String.format(Constant.SAVED, Constant.PHOTO);
+        }
+        else {
+            return clearTempFlickrTag();
         }
     }
 }

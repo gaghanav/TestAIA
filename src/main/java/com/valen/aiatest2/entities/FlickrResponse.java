@@ -5,13 +5,13 @@ import lombok.Setter;
 
 //@JsonIgnoreProperties(ignoreUnknown = true)
 @Getter @Setter
-public class Flickr {
-    private FlickrPhoto photo;
+public class FlickrResponse {
+    private FlickrPhotoTag photo;
 
-    public Flickr(FlickrPhoto photo) {
+    public FlickrResponse(FlickrPhotoTag photo) {
         this.photo = photo;
     }
 
-    public Flickr() {
+    public FlickrResponse() {
     }
 }

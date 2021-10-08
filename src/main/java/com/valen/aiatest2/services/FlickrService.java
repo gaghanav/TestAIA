@@ -1,14 +1,16 @@
 package com.valen.aiatest2.services;
 
-import com.valen.aiatest2.entities.Flickr;
-import com.valen.aiatest2.entities.Photo;
-import com.valen.aiatest2.entities.Tag;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.valen.aiatest2.entities.FlickrPhotoResponse;
+import com.valen.aiatest2.entities.FlickrResponse;
+import com.valen.aiatest2.entities.FlickrResponseWithStats;
 
 public interface FlickrService {
-    Flickr getFlickrTag(String id);
-    Flickr checkTempFlickrTag();
+    FlickrResponse getFlickrTag(String id);
+    FlickrResponse checkTempFlickrTag();
     String clearTempFlickrTag();
-    void saveTag();
+    String saveTag();
+    FlickrResponseWithStats getFlickrPhotoResponse(String text);
+    FlickrResponseWithStats checkTempFlickrPhotoResponse();
+    String clearTempFlickrPhotoResponse();
+    String savePhoto();
 }

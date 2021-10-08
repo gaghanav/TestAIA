@@ -20,6 +20,19 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    public Tag getTag(String id) {
+        return tagRepository.getById(id);
+    }
+
+    @Override
+    public void deleteTag(Tag tag) {
+        Tag delTag = tagRepository.getById(tag.getTagId());
+        if(tag.getTagId()!=null){
+            tagRepository.delete(delTag);
+        }
+    }
+
+    @Override
     public Page<Tag> getTagByPage(Pageable pageable) {
         return tagRepository.findAll(pageable);
     }

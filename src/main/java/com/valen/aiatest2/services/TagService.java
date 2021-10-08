@@ -6,5 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface TagService {
     Tag saveTag(Tag tag);
+    Tag getTag(String id);
+    void deleteTag(Tag tag);
     Page<Tag> getTagByPage(Pageable pageable);
 }
