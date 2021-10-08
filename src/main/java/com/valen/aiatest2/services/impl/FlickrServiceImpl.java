@@ -22,6 +22,12 @@ public class FlickrServiceImpl implements FlickrService {
     @Autowired
     private PhotoService photoService;
 
+    public FlickrServiceImpl(WebClient webClient, TagService tagService, PhotoService photoService) {
+        this.webClient = webClient;
+        this.tagService = tagService;
+        this.photoService = photoService;
+    }
+
     private FlickrResponse tempFlickrResponse = new FlickrResponse();
     private FlickrResponseWithStats tempFlickrPhotoResponse = new FlickrResponseWithStats();
 
