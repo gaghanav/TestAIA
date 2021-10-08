@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/flickr")
+@CrossOrigin("*")
 public class FlickrController {
 
     @Autowired
