@@ -1,7 +1,7 @@
 # TestAIA
-``text
+```text
 By Valen
-``
+```
 ## Requirements
 ```text
 - Java Version 11,
@@ -9,6 +9,6 @@ By Valen
 ```
 
 ## Config
-``text
+```text
 - Database Name : aia_test
-``
+```
